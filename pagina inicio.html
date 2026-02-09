@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Círculo de Apoyo - Plataforma de Servicios Profesionales</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootswatch Brite -->
+    <link href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.3/dist/brite/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* ---------- ESTILO GENERAL ---------- */
+        body {
+            font-family: 'Arial', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* ---------- BOTONES CARTOON ---------- */
+        .btn-cartoon {
+            background: #35d7e5;
+            border: 2px solid #000;
+            color: #000;
+            font-weight: 700;
+            padding: 12px 30px;
+            border-radius: 10px;
+            box-shadow: 6px 6px 0 #000;
+            transition: transform .08s ease, box-shadow .08s ease;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 18px;
+        }
+
+        .btn-cartoon:hover {
+            filter: brightness(1.06);
+            color: #000;
+        }
+
+        .btn-cartoon:active {
+            transform: translate(6px, 6px);
+            box-shadow: 0 0 0 #000;
+        }
+
+        .btn-cartoon-secondary {
+            background: #ff6b9d;
+            border: 2px solid #000;
+            color: #000;
+            font-weight: 700;
+            padding: 12px 30px;
+            border-radius: 10px;
+            box-shadow: 6px 6px 0 #000;
+            transition: transform .08s ease, box-shadow .08s ease;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 18px;
+        }
+
+        .btn-cartoon-secondary:hover {
+            filter: brightness(1.06);
+            color: #000;
+        }
+
+        .btn-cartoon-secondary:active {
+            transform: translate(6px, 6px);
+            box-shadow: 0 0 0 #000;
+        }
+
+        .btn-cartoon-success {
+            background: #4caf50;
+            border: 2px solid #000;
+            color: #000;
+            font-weight: 700;
+            padding: 12px 30px;
+            border-radius: 10px;
+            box-shadow: 6px 6px 0 #000;
+            transition: transform .08s ease, box-shadow .08s ease;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 18px;
+        }
+
+        .btn-cartoon-success:hover {
+            filter: brightness(1.06);
+            color: #000;
+        }
+
+        .btn-cartoon-success:active {
+            transform: translate(6px, 6px);
+            box-shadow: 0 0 0 #000;
+        }
+
+        /* ---------- HEADER ---------- */
+        .hero-section {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            text-align: center;
+            color: white;
+            z-index: 2;
+            padding: 20px;
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 900;
+            text-shadow: 5px 5px 0 rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
+            animation: fadeInDown 1s ease;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 30px;
+            text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.2);
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero-buttons {
+            margin-top: 40px;
+            animation: fadeIn 1.5s ease;
+        }
+
+        /* ---------- CÍRCULOS DECORATIVOS ---------- */
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .circle-1 {
+            width: 150px;
+            height: 150px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .circle-2 {
+            width: 100px;
+            height: 100px;
+            top: 60%;
+            left: 80%;
+            animation-delay: 1s;
+        }
+
+        .circle-3 {
+            width: 200px;
+            height: 200px;
+            top: 30%;
+            right: 5%;
+            animation-delay: 2s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* ---------- SECCIÓN SERVICIOS ---------- */
+        .services-section {
+            padding: 80px 20px;
+            background: #f8f9fa;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 60px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* ---------- TARJETAS DE SERVICIOS ---------- */
+        .service-card {
+            background: white;
+            border: 3px solid #000;
+            border-radius: 12px;
+            box-shadow: 8px 8px 0 #000;
+            padding: 30px;
+            margin-bottom: 30px;
+            transition: transform .3s ease, box-shadow .3s ease;
+            height: 100%;
+        }
+
+        .service-card:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 12px 12px 0 #000;
+        }
+
+        .service-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .service-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #333;
+            text-align: center;
+        }
+
+        .service-description {
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .service-features {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 20px;
+        }
+
+        .service-features li {
+            padding: 8px 0;
+            color: #555;
+        }
+
+        .service-features li i {
+            color: #4caf50;
+            margin-right: 10px;
+        }
+
+        /* ---------- SECCIÓN CÓMO FUNCIONA ---------- */
+        .how-it-works {
+            padding: 80px 20px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .step-card {
+            background: rgba(255, 255, 255, 0.95);
+            border: 3px solid #000;
+            border-radius: 12px;
+            box-shadow: 8px 8px 0 #000;
+            padding: 30px;
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: #35d7e5;
+            border: 3px solid #000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 900;
+            margin: 0 auto 20px;
+            box-shadow: 4px 4px 0 #000;
+        }
+
+        /* ---------- TIPOS DE USUARIOS ---------- */
+        .users-section {
+            padding: 80px 20px;
+            background: white;
+        }
+
+        .user-card {
+            background: #f8f9fa;
+            border: 3px solid #000;
+            border-radius: 12px;
+            box-shadow: 8px 8px 0 #000;
+            padding: 40px;
+            margin-bottom: 30px;
+            transition: transform .3s ease, box-shadow .3s ease;
+        }
+
+        .user-card:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 12px 12px 0 #000;
+        }
+
+        .user-icon {
+            font-size: 5rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .user-type {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #333;
+            text-align: center;
+        }
+
+        /* ---------- CARACTERÍSTICAS ---------- */
+        .features-section {
+            padding: 80px 20px;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+
+        .feature-box {
+            background: rgba(255, 255, 255, 0.95);
+            border: 3px solid #000;
+            border-radius: 12px;
+            box-shadow: 8px 8px 0 #000;
+            padding: 30px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .feature-box i {
+            font-size: 3rem;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .feature-box h4 {
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        /* ---------- CTA ---------- */
+        .cta-section {
+            padding: 100px 20px;
+            background: #333;
+            text-align: center;
+            color: white;
+        }
+
+        .cta-title {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 30px;
+        }
+
+        /* ---------- FOOTER ---------- */
+        .footer {
+            background: #1a1a1a;
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        /* ---------- RESPONSIVE ---------- */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .service-icon {
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ========== HERO SECTION ========== -->
+    <section class="hero-section">
+        <div class="circle circle-1"></div>
+        <div class="circle circle-2"></div>
+        <div class="circle circle-3"></div>
+
+        <div class="hero-content">
+            <h1 class="hero-title">Círculo de Apoyo</h1>
+            <p class="hero-subtitle">Plataforma de Servicios Profesionales para Adultos Mayores</p>
+            <p style="font-size: 1.2rem; margin-bottom: 40px;">
+                Conecta con profesionales certificados • Agenda tus citas • Recibe atención de calidad
+            </p>
+            <div class="hero-buttons">
+                <a href="RegistroUser.html" class="btn-cartoon me-3">Registrarse</a>
+                <a href="Login.html" class="btn-cartoon-secondary">Iniciar Sesión</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SERVICIOS DISPONIBLES ========== -->
+    <section class="services-section">
+        <div class="container">
+            <h2 class="section-title">Servicios Profesionales Disponibles</h2>
+            <p class="section-subtitle">
+                Profesionales certificados listos para atender tus necesidades con reservación en línea
+            </p>
+
+            <div class="row mt-5">
+                <div class="col-md-4 mb-4">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-user-md" style="color: #667eea;"></i>
+                        </div>
+                        <h3 class="service-title">Atención Médica</h3>
+                        <p class="service-description">
+                            Doctores, enfermeras y fisioterapeutas especializados en geriatría
+                        </p>
+                        <ul class="service-features">
+                            <li><i class="fas fa-check-circle"></i> Consultas a domicilio</li>
+                            <li><i class="fas fa-check-circle"></i> Terapias físicas</li>
+                            <li><i class="fas fa-check-circle"></i> Control de medicamentos</li>
+                            <li><i class="fas fa-check-circle"></i> Monitoreo de signos vitales</li>
+                        </ul>
+                        <a href="#" class="btn-cartoon-success">Ver Profesionales</a>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-home" style="color: #4caf50;"></i>
+                        </div>
+                        <h3 class="service-title">Cuidado en el Hogar</h3>
+                        <p class="service-description">
+                            Empleadas domésticas y cuidadoras con experiencia certificada
+                        </p>
+                        <ul class="service-features">
+                            <li><i class="fas fa-check-circle"></i> Asistencia personal diaria</li>
+                            <li><i class="fas fa-check-circle"></i> Preparación de alimentos</li>
+                            <li><i class="fas fa-check-circle"></i> Limpieza y organización</li>
+                            <li><i class="fas fa-check-circle"></i> Acompañamiento 24/7</li>
+                        </ul>
+                        <a href="#" class="btn-cartoon-success">Ver Cuidadoras</a>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-heartbeat" style="color: #ff6b9d;"></i>
+                        </div>
+                        <h3 class="service-title">Servicios Especializados</h3>
+                        <p class="service-description">
+                            Terapeutas, nutricionistas y profesionales complementarios
+                        </p>
+                        <ul class="service-features">
+                            <li><i class="fas fa-check-circle"></i> Terapia ocupacional</li>
+                            <li><i class="fas fa-check-circle"></i> Nutrición geriátrica</li>
+                            <li><i class="fas fa-check-circle"></i> Peluquería a domicilio</li>
+                            <li><i class="fas fa-check-circle"></i> Transporte médico</li>
+                        </ul>
+                        <a href="#" class="btn-cartoon-success">Ver Especialistas</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== CÓMO FUNCIONA ========== -->
+    <section class="how-it-works">
+        <div class="container">
+            <h2 class="section-title" style="color: white;">¿Cómo Funciona?</h2>
+            <p class="section-subtitle" style="color: rgba(255,255,255,0.9);">
+                Reserva servicios profesionales en 4 simples pasos
+            </p>
+
+            <div class="row mt-5">
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <h4 style="font-weight: 700; margin-bottom: 15px;">Regístrate</h4>
+                        <p>
+                            Crea tu cuenta como usuario o profesional de la salud
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <h4 style="font-weight: 700; margin-bottom: 15px;">Busca</h4>
+                        <p>
+                            Explora profesionales, revisa perfiles y horarios disponibles
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <h4 style="font-weight: 700; margin-bottom: 15px;">Reserva</h4>
+                        <p>
+                            Agenda tu cita en el calendario del profesional
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="step-card">
+                        <div class="step-number">4</div>
+                        <h4 style="font-weight: 700; margin-bottom: 15px;">Recibe Servicio</h4>
+                        <p>
+                            Disfruta de atención profesional y califica tu experiencia
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== TIPOS DE USUARIOS ========== -->
+    <section class="users-section">
+        <div class="container">
+            <h2 class="section-title">¿Quién Puede Usar la Plataforma?</h2>
+            <p class="section-subtitle">
+                Una solución pensada para todos los involucrados en el cuidado del adulto mayor
+            </p>
+
+            <div class="row mt-5">
+                <div class="col-md-4 mb-4">
+                    <div class="user-card">
+                        <div class="user-icon">👴👵</div>
+                        <h3 class="user-type">Adultos Mayores</h3>
+                        <p style="text-align: center; color: #666; line-height: 1.8;">
+                            Busca y agenda servicios profesionales desde casa. 
+                            Accede a un calendario simple para gestionar tus citas y 
+                            recibe recordatorios automáticos.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <div class="user-card">
+                        <div class="user-icon">👨‍⚕️👩‍⚕️</div>
+                        <h3 class="user-type">Profesionales</h3>
+                        <p style="text-align: center; color: #666; line-height: 1.8;">
+                            Doctores, enfermeras, cuidadoras y empleadas domésticas 
+                            pueden ofrecer sus servicios, gestionar su calendario 
+                            y recibir reservaciones directas.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <div class="user-card">
+                        <div class="user-icon">👨‍👩‍👧‍👦</div>
+                        <h3 class="user-type">Familiares</h3>
+                        <p style="text-align: center; color: #666; line-height: 1.8;">
+                            Supervisa las citas agendadas, recibe notificaciones 
+                            de servicios recibidos y mantente informado del 
+                            cuidado de tu ser querido.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== CARACTERÍSTICAS PRINCIPALES ========== -->
+    <section class="features-section">
+        <div class="container">
+            <h2 class="section-title" style="color: white;">Características de la Plataforma</h2>
+            <p class="section-subtitle" style="color: rgba(255,255,255,0.9); margin-bottom: 60px;">
+                Tecnología al servicio del cuidado profesional
+            </p>
+
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="feature-box">
+                        <i class="fas fa-calendar-alt"></i>
+                        <h4>Sistema de Reservaciones</h4>
+                        <p>Calendario inteligente con disponibilidad en tiempo real</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <div class="feature-box">
+                        <i class="fas fa-bell"></i>
+                        <h4>Notificaciones Automáticas</h4>
+                        <p>Recordatorios de citas por email y SMS</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <div class="feature-box">
+                        <i class="fas fa-shield-alt"></i>
+                        <h4>Profesionales Verificados</h4>
+                        <p>Todos los proveedores pasan verificación de credenciales</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <div class="feature-box">
+                        <i class="fas fa-star"></i>
+                        <h4>Sistema de Calificaciones</h4>
+                        <p>Reseñas y valoraciones de otros usuarios</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <div class="feature-box">
+                        <i class="fas fa-credit-card"></i>
+                        <h4>Pagos Seguros</h4>
+                        <p>Procesamiento de pagos integrado y seguro</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <div class="feature-box">
+                        <i class="fas fa-mobile-alt"></i>
+                        <h4>Acceso Multiplataforma</h4>
+                        <p>Disponible en computadora, tablet y móvil</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <div class="feature-box">
+                        <i class="fas fa-history"></i>
+                        <h4>Historial de Servicios</h4>
+                        <p>Registro completo de todas las atenciones recibidas</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <div class="feature-box">
+                        <i class="fas fa-user-shield"></i>
+                        <h4>Privacidad Garantizada</h4>
+                        <p>Protección de datos personales y médicos</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <div class="feature-box">
+                        <i class="fas fa-headset"></i>
+                        <h4>Soporte 24/7</h4>
+                        <p>Asistencia técnica disponible en todo momento</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== CALL TO ACTION ========== -->
+    <section class="cta-section">
+        <div class="container">
+            <h2 class="cta-title">Comienza Hoy Mismo</h2>
+            <p style="font-size: 1.3rem; margin-bottom: 40px;">
+                Únete a nuestra comunidad de profesionales y usuarios
+            </p>
+            <a href="RegistroUser.html" class="btn-cartoon me-3" style="font-size: 20px; padding: 15px 40px;">
+                Registrarme como Usuario
+            </a>
+            <a href="#" class="btn-cartoon-success" style="font-size: 20px; padding: 15px 40px;">
+                Ofrecer mis Servicios
+            </a>
+        </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="footer">
+        <div class="container">
+            <h4 style="font-weight: 700; margin-bottom: 20px;">Círculo de Apoyo</h4>
+            <p>Plataforma de Servicios Profesionales para Adultos Mayores</p>
+            <p style="margin-top: 15px;">Universidad Fidélitas - Costa Rica</p>
+            <p style="margin-top: 30px; color: #aaa; font-size: 0.85rem;">
+                &copy; 2026 Círculo de Apoyo. Conectando profesionales con quienes más lo necesitan.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>
