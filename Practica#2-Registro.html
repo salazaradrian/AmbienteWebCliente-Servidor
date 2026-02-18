@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Registro de Usuario</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      padding: 40px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      border: 2px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    .error {
+      color: red;
+      font-size: 12px;
+      margin-top: 5px;
+    }
+
+    button {
+      padding: 10px;
+      width: 100%;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      background-color: gray;
+      cursor: not-allowed;
+    }
+
+    #resultado {
+      margin-top: 20px;
+      font-weight: bold;
+      color: green;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>Registro de Usuario</h1>
+
+  <div class="form-group">
+    <input type="text" id="nombre" placeholder="Nombre completo" oninput="validarNombre()">
+    <p id="errorNombre" class="error"></p>
+  </div>
+
+  <div class="form-group">
+    <input type="text" id="email" placeholder="Email" oninput="validarEmail()">
+    <p id="errorEmail" class="error"></p>
+  </div>
+
+  <div class="form-group">
+    <input type="password" id="password" placeholder="Contraseña" oninput="validarPassword()">
+    <p id="errorPassword" class="error"></p>
+  </div>
+
+  <div class="form-group">
+    <input type="password" id="confirmar" placeholder="Confirmar contraseña" oninput="validarConfirmar()">
+    <p id="errorConfirmar" class="error"></p>
+  </div>
+
+  <button id="btnRegistrar" onclick="registrar()" disabled>
+    Registrar
+  </button>
+
+  <div id="resultado"></div>
+
+  <script>
+
+    function validarNombre() {
+      var nombre = document.getElementById("nombre").value;
+      var input = document.getElementById("nombre");
+      var error = document.getElementById("errorNombre");
+
+      if (nombre.length === 0) {
+        error.innerHTML = "El nombre es obligatorio.";
+        input.style.borderColor = "red";
+      } else if (nombre.length < 3) {
+        error.innerHTML = "Debe tener al menos 3 caracteres.";
+        input.style.borderColor = "red";
+      } else {
+        error.innerHTML = "";
+        input.style.borderColor = "green";
+      }
+
+      actualizarBoton();
+    }
+
+    function validarEmail() {
+      var email = document.getElementById("email").value;
+      var input = document.getElementById("email");
+      var error = document.getElementById("errorEmail");
+
+      if (email.indexOf("@") === -1 || email.indexOf(".") === -1) {
+        error.innerHTML = "Ingrese un email válido (debe contener @ y .)";
+        input.style.borderColor = "red";
+      } else {
+        error.innerHTML = "";
+        input.style.borderColor = "green";
+      }
+
+      actualizarBoton();
+    }
+
+    function validarPassword() {
+      var password = document.getElementById("password").value;
+      var input = document.getElementById("password");
+      var error = document.getElementById("errorPassword");
+
+      if (password.length < 6) {
+        error.innerHTML = "Debe tener al menos 6 caracteres.";
+        input.style.borderColor = "red";
+      } else {
+        error.innerHTML = "";
+        input.style.borderColor = "green";
+      }
+
+      validarConfirmar(); // Revalida confirmar si cambia password
+      actualizarBoton();
+    }
+
+    function validarConfirmar() {
+      var password = document.getElementById("password").value;
+      var confirmar = document.getElementById("confirmar").value;
+      var input = document.getElementById("confirmar");
+      var error = document.getElementById("errorConfirmar");
+
+      if (confirmar.length === 0) {
+        error.innerHTML = "Debe confirmar la contraseña.";
+        input.style.borderColor = "red";
+      } else if (password !== confirmar) {
+        error.innerHTML = "Las contraseñas no coinciden.";
+        input.style.borderColor = "red";
+      } else {
+        error.innerHTML = "";
+        input.style.borderColor = "green";
+      }
+
+      actualizarBoton();
+    }
+
+    function todoValido() {
+      var nombre = document.getElementById("nombre").value;
+      var email = document.getElementById("email").value;
+      var password = document.getElementById("password").value;
+      var confirmar = document.getElementById("confirmar").value;
+
+      return (
+        nombre.length >= 3 &&
+        email.indexOf("@") !== -1 &&
+        email.indexOf(".") !== -1 &&
+        password.length >= 6 &&
+        password === confirmar
+      );
+    }
+
+    function actualizarBoton() {
+      document.getElementById("btnRegistrar").disabled = !todoValido();
+    }
+
+    function registrar() {
+      if (!todoValido()) return;
+
+      var nombre = document.getElementById("nombre").value;
+      var email = document.getElementById("email").value;
+
+      document.getElementById("resultado").innerHTML =
+        "✅ Registro exitoso!<br><br>Nombre: " + nombre +
+        "<br>Email: " + email;
+    }
+
+  </script>
+
+</body>
+</html>
+
