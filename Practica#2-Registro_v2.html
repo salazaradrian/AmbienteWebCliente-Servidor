@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Registro con Vista de Password</title>
+  <style>
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f4; padding: 40px; display: flex; justify-content: center; }
+    .card { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 100%; max-width: 400px; }
+    h1 { text-align: center; color: #333; margin-bottom: 25px; }
+    
+    .form-group { margin-bottom: 15px; position: relative; }
+    
+    input { 
+      width: 100%; padding: 10px; border: 2px solid #ccc; border-radius: 5px; 
+      font-size: 14px; box-sizing: border-box; transition: border-color 0.3s;
+    }
+
+    /* --- Contenedor para el Ojo --- */
+    .pass-wrapper { position: relative; display: flex; align-items: center; }
+    .toggle-password {
+      position: absolute; right: 10px; cursor: pointer; user-select: none;
+      font-size: 18px; filter: grayscale(1); transition: 0.2s;
+    }
+    .toggle-password:hover { filter: grayscale(0); transform: scale(1.1); }
+
+    .error { color: #e74c3c; font-size: 12px; margin-top: 5px; min-height: 15px; }
+    
+    /* --- Medidor de Fuerza --- */
+    .meter-container { height: 6px; width: 100%; background-color: #eee; border-radius: 3px; margin-top: 8px; display: none; overflow: hidden; }
+    .meter-bar { height: 100%; width: 0%; transition: all 0.4s ease; }
+    .strength-text { font-size: 12px; font-weight: bold; margin-top: 5px; display: block; }
+
+    button { 
+      padding: 12px; width: 100%; background-color: #007bff; color: white; 
+      border: none; border-radius: 5px; font-size: 16px; cursor: pointer; font-weight: bold;
+    }
+    button:disabled { background-color: #bdc3c7; cursor: not-allowed; }
+    
+    #resultado { margin-top: 20px; font-weight: bold; text-align: center; }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <h1>Registro</h1>
+
+  <div class="form-group">
+    <input type="text" id="nombre" placeholder="Nombre completo" oninput="validarNombre()">
+    <p id="errorNombre" class="error"></p>
+  </div>
+
+  <div class="form-group">
+    <input type="text" id="email" placeholder="Email" oninput="validarEmail()">
+    <p id="errorEmail" class="error"></p>
+  </div>
+
+  <div class="form-group">
+    <div class="pass-wrapper">
+      <input type="password" id="password" placeholder="Contraseña" oninput="validarPassword()">
+      <span class="toggle-password" onclick="toggleVisibility('password', this)">👁️</span>
+    </div>
+    <div class="meter-container" id="meterContainer">
+      <div class="meter-bar" id="meterBar"></div>
+    </div>
+    <span id="strengthText" class="strength-text"></span>
+    <p id="errorPassword" class="error"></p>
+  </div>
+
+  <div class="form-group">
+    <div class="pass-wrapper">
+      <input type="password" id="confirmar" placeholder="Confirmar contraseña" oninput="validarConfirmar()">
+      <span class="toggle-password" onclick="toggleVisibility('confirmar', this)">👁️</span>
+    </div>
+    <p id="errorConfirmar" class="error"></p>
+  </div>
+
+  <button id="btnRegistrar" onclick="registrar()" disabled>Crear Cuenta</button>
+  <div id="resultado"></div>
+</div>
+
+<script>
+    // Función para mostrar/ocultar contraseña
+    function toggleVisibility(id, el) {
+  const input = document.getElementById(id);
+  
+  // Definimos las rutas de tus imágenes (asegúrate de que los nombres coincidan)
+  const imagenMostrar = "Imagenes/show.png";
+  const imagenOcultar = "Imagenes/hide.png";
+
+  if (input.type === "password") {
+    input.type = "text";
+    el.src = imagenOcultar; // Cambiamos la ruta de la imagen
+  } else {
+    input.type = "password";
+    el.src = imagenMostrar; // Volvemos a la imagen original
+  }
+}
+
+    function validarNombre() {
+      let val = document.getElementById("nombre").value;
+      let input = document.getElementById("nombre");
+      let err = document.getElementById("errorNombre");
+      
+      let valida = val.length >= 3;
+      err.innerHTML = valida ? "" : "Mínimo 3 caracteres.";
+      input.style.borderColor = valida ? "#2ecc71" : "#e74c3c";
+      actualizarBoton();
+    }
+
+    function validarEmail() {
+      let val = document.getElementById("email").value;
+      let input = document.getElementById("email");
+      let err = document.getElementById("errorEmail");
+      
+      let valida = val.includes("@") && val.includes(".");
+      err.innerHTML = valida ? "" : "Email no válido.";
+      input.style.borderColor = valida ? "#2ecc71" : "#e74c3c";
+      actualizarBoton();
+    }
+
+    function validarPassword() {
+      const pass = document.getElementById("password").value;
+      const input = document.getElementById("password");
+      const err = document.getElementById("errorPassword");
+      const meter = document.getElementById("meterContainer");
+      const bar = document.getElementById("meterBar");
+      const txt = document.getElementById("strengthText");
+
+      if (pass.length === 0) {
+        meter.style.display = "none";
+        txt.innerHTML = "";
+        actualizarBoton();
+        return;
+      }
+
+      meter.style.display = "block";
+      let strength = 0;
+
+      // Criterios de evaluación
+      if (pass.length >= 6) strength++;
+      if (pass.length >= 10) strength++;
+      if (/[A-Z]/.test(pass)) strength++;
+      if (/[0-9]/.test(pass)) strength++;
+      if (/[^A-Za-z0-9]/.test(pass)) strength++;
+
+      // Niveles visuales
+      if (strength <= 2) {
+        bar.style.width = "33%"; bar.style.backgroundColor = "#e74c3c";
+        txt.innerHTML = "Seguridad: Baja"; txt.style.color = "#e74c3c";
+      } else if (strength <= 4) {
+        bar.style.width = "66%"; bar.style.backgroundColor = "#f1c40f";
+        txt.innerHTML = "Seguridad: Media"; txt.style.color = "#f39c12";
+      } else {
+        bar.style.width = "100%"; bar.style.backgroundColor = "#2ecc71";
+        txt.innerHTML = "Seguridad: Alta"; txt.style.color = "#2ecc71";
+      }
+
+      input.style.borderColor = (pass.length >= 6) ? "#2ecc71" : "#e74c3c";
+      err.innerHTML = (pass.length >= 6) ? "" : "Mínimo 6 caracteres.";
+      
+      validarConfirmar();
+      actualizarBoton();
+    }
+
+    function validarConfirmar() {
+      let p1 = document.getElementById("password").value;
+      let p2 = document.getElementById("confirmar").value;
+      let input = document.getElementById("confirmar");
+      let err = document.getElementById("errorConfirmar");
+
+      if (p2.length > 0) {
+        let coincide = (p1 === p2);
+        err.innerHTML = coincide ? "" : "No coincide.";
+        input.style.borderColor = coincide ? "#2ecc71" : "#e74c3c";
+      }
+      actualizarBoton();
+    }
+
+    function actualizarBoton() {
+      const n = document.getElementById("nombre").value;
+      const e = document.getElementById("email").value;
+      const p = document.getElementById("password").value;
+      const c = document.getElementById("confirmar").value;
+      
+      const esValido = (n.length >= 3 && e.includes("@") && p.length >= 6 && p === c);
+      document.getElementById("btnRegistrar").disabled = !esValido;
+    }
+
+    function registrar() {
+      document.getElementById("resultado").innerHTML = "<span style='color:green'>✅ ¡Cuenta creada con éxito!</span>";
+    }
+</script>
+
+</body>
+</html>
