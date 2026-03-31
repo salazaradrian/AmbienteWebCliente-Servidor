@@ -7,6 +7,14 @@
 // 1. Configuración de Seguridad y Manejador de Errores (Req. 2.5)
 header('Content-Type: application/json'); // Siempre responderemos en JSON
 
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    echo json_encode([
+        "exito" => false,
+        "mensaje" => "Método no permitido."
+    ]);
+    exit;
+}
+
 set_error_handler(function($errno, $errstr, $errfile, $errline) {
     error_log("Error: [$errno] $errstr en $errfile:$errline");
     echo json_encode([
@@ -20,7 +28,7 @@ set_error_handler(function($errno, $errstr, $errfile, $errline) {
 session_start();
 
 // Inicializar el arreglo de tareas si no existe en la sesión
-if (!isset($_SESSION['tareas'])) {
+if (!isset($_SESSION['tareas']) || !is_array($_SESSION['tareas'])) {
     $_SESSION['tareas'] = [];
 }
 
@@ -36,7 +44,7 @@ function findTaskIndex($tasks, $id) {
 
 // 3. Captura de la petición
 // Aceptamos la acción por POST (según Req. 5)
-$accion = $_POST['accion'] ?? '';
+$accion = isset($_POST['accion']) ? trim($_POST['accion']) : '';
 $respuesta = ["exito" => false, "tareas" => []];
 
 try {
@@ -50,13 +58,13 @@ try {
             $nombre = isset($_POST['nombre']) ? trim($_POST['nombre']) : '';
             
             // Validación en servidor (Req. 2.5)
-            if (empty($nombre)) {
+            if (empty($nombre) || strlen($nombre) > 100) {
                 $respuesta["mensaje"] = "El nombre de la tarea es obligatorio.";
             } else {
                 // Estructura de datos sugerida (Req. 4) + Seguridad (Req. 3)
                 $nuevaTarea = [
                     "id" => uniqid('task_', true),
-                    "nombre" => htmlspecialchars($nombre), 
+                    "nombre" => htmlspecialchars($nombre, ENT_QUOTES, 'UTF-8'), 
                     "completada" => false
                 ];
                 $_SESSION['tareas'][] = $nuevaTarea;
@@ -69,7 +77,7 @@ try {
         case 'completar':
             $id = isset($_POST['id']) ? trim($_POST['id']) : '';
             
-            if (empty($id)) {
+            if (empty($id) || !is_string($id)) {
                 $respuesta["mensaje"] = "ID de tarea requerido.";
             } else {
                 $indice = findTaskIndex($_SESSION['tareas'], $id);
@@ -86,7 +94,7 @@ try {
         case 'eliminar':
             $id = isset($_POST['id']) ? trim($_POST['id']) : '';
             
-            if (empty($id)) {
+            if (empty($id) || !is_string($id)) {
                 $respuesta["mensaje"] = "ID de tarea requerido.";
             } else {
                 $indice = findTaskIndex($_SESSION['tareas'], $id);
@@ -102,13 +110,14 @@ try {
             break;
 
         default:
-            $respuesta["mensaje"] = "Acción '" . htmlspecialchars($accion) . "' no reconocida.";
+            $respuesta["mensaje"] = "Acción '" . htmlspecialchars($accion, ENT_QUOTES, 'UTF-8') . "' no reconocida.";
             break;
     }
 
-} catch (Exception $e) {
+} catch (Throwable $e) {
+    error_log("Excepción: " . $e->getMessage());
     $respuesta["exito"] = false;
-    $respuesta["mensaje"] = "Excepción: " . $e->getMessage();
+    $respuesta["mensaje"] = "Error interno del servidor.";
 }
 
 // 4. Respuesta Final (Req. 5)
