@@ -345,7 +345,145 @@
    
     <div id="toast"></div>
 
-  
+  <script>
+
+const lista = document.getElementById('lista-tareas');
+const input = document.getElementById('nueva-tarea');
+const btnAgregar = document.getElementById('btn-agregar');
+const contador = document.getElementById('contador');
+const mensajeError = document.getElementById('mensaje-error');
+const toast = document.getElementById('toast');
+
+
+
+function mostrarToast(msg, tipo = 'ok') {
+    toast.textContent = msg;
+    toast.className = '';
+    toast.classList.add('visible', tipo);
+
+    setTimeout(() => {
+        toast.classList.remove('visible');
+    }, 2000);
+}
+
+
+
+function llamarAPI(data) {
+    return fetch('api.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams(data)
+    })
+    .then(res => res.json());
+}
+
+
+
+function cargarTareas() {
+    llamarAPI({ accion: 'listar' })
+        .then(res => {
+            if (!res.exito) throw res.mensaje;
+
+            lista.innerHTML = '';
+
+            if (res.tareas.length === 0) {
+                lista.classList.add('vacia');
+            } else {
+                lista.classList.remove('vacia');
+            }
+
+            res.tareas.forEach(tarea => {
+                const li = document.createElement('li');
+                li.className = 'tarea-item ' + (tarea.completada ? 'completada' : '');
+
+                li.innerHTML = `
+                    <div class="tarea-icono">${tarea.completada ? '✓' : ''}</div>
+                    <div class="tarea-nombre">${tarea.nombre}</div>
+                    <div class="tarea-acciones">
+                        ${!tarea.completada ? `<button class="btn-completar" data-id="${tarea.id}">Completar</button>` : ''}
+                        <button class="btn-eliminar" data-id="${tarea.id}">Eliminar</button>
+                    </div>
+                `;
+
+                lista.appendChild(li);
+            });
+
+            contador.textContent = res.tareas.length;
+        })
+        .catch(err => {
+            mensajeError.textContent = err;
+            mensajeError.classList.add('visible');
+        });
+}
+
+
+
+btnAgregar.addEventListener('click', () => {
+    const nombre = input.value.trim();
+
+    if (!nombre) {
+        mostrarToast('Escriba una tarea', 'error');
+        return;
+    }
+
+    llamarAPI({
+        accion: 'agregar',
+        nombre: nombre
+    })
+    .then(res => {
+        if (!res.exito) throw res.mensaje;
+
+        input.value = '';
+        mostrarToast('Tarea agregada');
+        cargarTareas(); 
+    })
+    .catch(err => mostrarToast(err, 'error'));
+});
+
+
+
+lista.addEventListener('click', (e) => {
+    const btn = e.target;
+
+    if (btn.classList.contains('btn-completar')) {
+        const id = btn.dataset.id;
+
+        llamarAPI({
+            accion: 'completar',
+            id: id
+        })
+        .then(res => {
+            if (!res.exito) throw res.mensaje;
+
+            mostrarToast('Tarea completada');
+            cargarTareas(); 
+        })
+        .catch(err => mostrarToast(err, 'error'));
+    }
+
+    if (btn.classList.contains('btn-eliminar')) {
+        const id = btn.dataset.id;
+
+        llamarAPI({
+            accion: 'eliminar',
+            id: id
+        })
+        .then(res => {
+            if (!res.exito) throw res.mensaje;
+
+            mostrarToast('Tarea eliminada');
+            cargarTareas(); 
+        })
+        .catch(err => mostrarToast(err, 'error'));
+    }
+});
+
+
+
+document.addEventListener('DOMContentLoaded', cargarTareas);
+</script>
 
 </body>
 </html>
