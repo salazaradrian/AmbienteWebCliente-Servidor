@@ -89,17 +89,22 @@
 
                         <div class="form-group">
                             <label class="text-info">Username:</label>
-                            <input type="text" class="form-control">
+                            <input type="text" id="usuario" class="form-control" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="text-info">Email:</label>
+                            <input type="email" id="email" class="form-control" required>
                         </div>
 
                         <div class="form-group">
                             <label class="text-info">Password:</label>
-                            <input type="password" id="password" class="form-control">
+                            <input type="password" id="password" class="form-control" required>
                         </div>
 
                         <div class="form-group">
                             <label class="text-info">Confirm Password:</label>
-                            <input type="password" id="confirmPassword" class="form-control">
+                            <input type="password" id="confirmPassword" class="form-control" required>
                         </div>
 
                         <!-- VER CONTRASEÑA -->
@@ -111,16 +116,21 @@
 
                         <div class="form-group">
                             <label class="text-info">
-                                Remember me
-                                <input type="checkbox">
+                                <input type="checkbox" id="terms" required> Acepto términos y condiciones
                             </label>
                         </div>
 
                         <button type="submit" class="btn-cartoon">Create user</button>
+                        <button type="button" class="btn-cartoon" onclick="location.href='pagina inicio.html'" style="background: #ff6b9d; margin-left: 10px;">Volver</button>
 
                         <!-- MENSAJE -->
                         <div id="success-message" style="display:none;">
-                            <span class="msg-success">Usuario creado correctamente</span>
+                            <span class="msg-success">Usuario creado correctamente. Redirigiendo...</span>
+                        </div>
+
+                        <!-- MENSAJE ERROR -->
+                        <div id="error-message" style="display:none; color: red; margin-top: 10px; font-weight: bold;">
+                            <span></span>
                         </div>
 
                     </form>
@@ -136,12 +146,57 @@
 function crearUsuario(event){
     event.preventDefault();
 
-    const msg = document.getElementById("success-message");
-    msg.style.display = "block";
+    const usuario = document.getElementById("usuario").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
+    const terms = document.getElementById("terms").checked;
+
+    const errorMsg = document.getElementById("error-message");
+    const successMsg = document.getElementById("success-message");
+
+    // Limpiar mensajes
+    errorMsg.style.display = "none";
+    successMsg.style.display = "none";
+
+    // Validaciones
+    if (!usuario || !email || !password || !confirmPassword) {
+        errorMsg.innerHTML = "<span>Por favor completa todos los campos</span>";
+        errorMsg.style.display = "block";
+        return;
+    }
+
+    if (usuario.length < 3) {
+        errorMsg.innerHTML = "<span>El usuario debe tener al menos 3 caracteres</span>";
+        errorMsg.style.display = "block";
+        return;
+    }
+
+    if (password.length < 4) {
+        errorMsg.innerHTML = "<span>La contraseña debe tener al menos 4 caracteres</span>";
+        errorMsg.style.display = "block";
+        return;
+    }
+
+    if (password !== confirmPassword) {
+        errorMsg.innerHTML = "<span>Las contraseñas no coinciden</span>";
+        errorMsg.style.display = "block";
+        return;
+    }
+
+    if (!terms) {
+        errorMsg.innerHTML = "<span>Debes aceptar los términos y condiciones</span>";
+        errorMsg.style.display = "block";
+        return;
+    }
+
+    // Si todo es correcto
+    successMsg.style.display = "block";
+    console.log("Registro exitoso:", { usuario, email });
 
     setTimeout(() => {
-        msg.style.display = "none";
-    }, 3000);
+        window.location.href = "pagina inicio.html";
+    }, 1500);
 }
 
 function togglePassword(){

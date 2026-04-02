@@ -110,10 +110,26 @@
         let password = document.getElementById("password").value;
         let mensaje = document.getElementById("mensaje");
 
-        if (usuario === "admin" && password === "1234") {
+        var destino = "";
+        if ((usuario === "admin" && password === "1234") || (usuario === "abuelo" && password === "1234") || (usuario === "voluntario" && password === "1234")) {
             mensaje.className = "alert alert-success";
-            mensaje.innerText = "Inicio de sesión exitoso";
+            
+            if (usuario === "voluntario") {
+                destino = "dashboard_voluntario.html";
+                mensaje.innerText = "Bienvenido voluntario. Redirigiendo a tu panel de tareas...";
+            } else if (usuario === "admin") {
+                destino = "dashboard_admin.html";
+                mensaje.innerText = "Acceso de administrador. Cargando panel...";
+            } else {
+                destino = "dashboard_abuelo.html";
+                mensaje.innerText = "Inicio de sesión exitoso. Redirigiendo al panel...";
+            }
+            
             mensaje.style.display = "block";
+
+            setTimeout(function () {
+                window.location.href = destino;
+            }, 1200);
         } else {
             mensaje.className = "alert alert-danger";
             mensaje.innerText = "Usuario o contraseña incorrectos";

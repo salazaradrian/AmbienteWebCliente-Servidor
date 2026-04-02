@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ofrecer Servicios - Círculo de Apoyo</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.3/dist/brite/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --azul-primary: #0d6efd;
+            --fondo: #f4f7fb;
+            --texto: #1f2937;
+            --borde: #000;
+            --verde: #10a95b;
+            --amarillo: #ffd95a;
+            --naranja: #fd8d3e;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f4f7fb, #eef8f2);
+            font-family: Arial, Helvetica, sans-serif;
+            color: var(--texto);
+        }
+
+        .navbar-services {
+            background: var(--azul-primary);
+            border-bottom: 3px solid var(--borde);
+            box-shadow: 0 6px 0 var(--borde);
+            padding: 1rem 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .navbar-title {
+            color: #fff;
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin: 0;
+        }
+
+        .navbar-info {
+            color: #fff;
+            font-size: 0.95rem;
+            margin: 0;
+        }
+
+        .card-section {
+            background: #fff;
+            border: 3px solid var(--borde);
+            border-radius: 14px;
+            box-shadow: 7px 7px 0 var(--borde);
+            padding: 1.75rem;
+            margin-bottom: 1.75rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--azul-primary);
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        label {
+            font-weight: 700;
+            font-size: 1.05rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control, .form-select {
+            border: 2px solid var(--borde);
+            border-radius: 8px;
+            box-shadow: 3px 3px 0 var(--borde);
+            padding: 0.75rem;
+            font-size: 1rem;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--azul-primary);
+            box-shadow: 5px 5px 0 var(--borde);
+        }
+
+        .btn-cartoon {
+            border: 2px solid var(--borde);
+            box-shadow: 4px 4px 0 var(--borde);
+            font-weight: 700;
+            border-radius: 10px;
+            transition: transform .08s ease, box-shadow .08s ease;
+        }
+
+        .btn-cartoon:active {
+            transform: translate(4px, 4px);
+            box-shadow: 0 0 0 var(--borde);
+        }
+
+        .btn-primary-custom {
+            background: var(--verde);
+            color: #fff;
+        }
+
+        .btn-primary-custom:hover {
+            background: #0d8644;
+            color: #fff;
+        }
+
+        .btn-secondary-custom {
+            background: var(--amarillo);
+            color: #333;
+        }
+
+        .btn-secondary-custom:hover {
+            background: #f0c842;
+            color: #333;
+        }
+
+        .btn-danger-custom {
+            background: #dc3545;
+            color: #fff;
+        }
+
+        .btn-danger-custom:hover {
+            background: #c82333;
+            color: #fff;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .stat-box {
+            background: #f8f9fa;
+            border: 2px solid var(--borde);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--azul-primary);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #5a6373;
+        }
+
+        /* ========== TARJETAS DE SERVICIO ========== */
+        .service-card {
+            background: #fff;
+            border: 3px solid var(--borde);
+            border-radius: 12px;
+            box-shadow: 6px 6px 0 var(--borde);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: transform .15s ease, box-shadow .15s ease;
+        }
+
+        .service-card:hover {
+            transform: translate(-3px, -3px);
+            box-shadow: 9px 9px 0 var(--borde);
+        }
+
+        .service-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+
+        .service-title {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--azul-primary);
+        }
+
+        .service-badge {
+            display: inline-block;
+            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            border: 2px solid var(--borde);
+        }
+
+        .badge-active {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .badge-inactive {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .service-details {
+            margin: 1rem 0;
+            line-height: 1.8;
+        }
+
+        .detail-row {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 0.7rem;
+            font-size: 1rem;
+        }
+
+        .detail-label {
+            font-weight: 700;
+            min-width: 100px;
+        }
+
+        .service-actions {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-icon {
+            padding: 0.6rem 1.2rem;
+            font-size: 0.9rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            background: #f8f9fa;
+            border: 3px dashed var(--borde);
+            border-radius: 12px;
+        }
+
+        .empty-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            color: #8b92a0;
+        }
+
+        .empty-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #5a6373;
+        }
+
+        .alert-box {
+            display: none;
+            margin-bottom: 1rem;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 768px) {
+            .navbar-title {
+                font-size: 1.4rem;
+            }
+
+            .section-title {
+                font-size: 1.4rem;
+            }
+
+            .service-header {
+                flex-direction: column;
+            }
+
+            .service-actions {
+                gap: 0.5rem;
+            }
+
+            .btn-cartoon {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ========== NAVBAR ========== -->
+    <nav class="navbar-services">
+        <div class="container d-flex justify-content-between align-items-center">
+            <div>
+                <h1 class="navbar-title">Ofrecer Servicios</h1>
+                <p class="navbar-info">Comparte tus habilidades con la comunidad</p>
+            </div>
+            <button class="btn btn-light btn-cartoon" onclick="location.href='pagina inicio.html'">Volver</button>
+        </div>
+    </nav>
+
+    <main class="container">
+
+        <!-- ========== FORMULARIO DE NUEVO SERVICIO ========== -->
+        <section class="card-section">
+            <h2 class="section-title">📝 Registrar Nuevo Servicio</h2>
+
+            <div id="alertBox" class="alert-box"></div>
+
+            <form id="serviceForm" onsubmit="agregarServicio(event)">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="serviceName">Nombre del servicio</label>
+                            <input type="text" class="form-control" id="serviceName" required placeholder="Ej. Reparación de electrodomésticos">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="serviceCategory">Categoría</label>
+                            <select class="form-select" id="serviceCategory" required>
+                                <option value="">Selecciona una categoría</option>
+                                <option value="tecnologia">💻 Tecnología</option>
+                                <option value="reparacion">🔧 Reparación</option>
+                                <option value="limpieza">🧹 Limpieza</option>
+                                <option value="jardineria">🌿 Jardinería</option>
+                                <option value="cocina">👨‍🍳 Cocina/Catering</option>
+                                <option value="salud">⚕️ Salud/Bienestar</option>
+                                <option value="educacion">📚 Educación</option>
+                                <option value="transporte">🚗 Transporte</option>
+                                <option value="otro">📋 Otro</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="serviceDescription">Descripción detallada</label>
+                    <textarea class="form-control" id="serviceDescription" rows="4" required placeholder="Describe tu servicio, qué incluye, experiencia, etc."></textarea>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="servicePrice">Tarifa (por hora o servicio)</label>
+                            <input type="number" class="form-control" id="servicePrice" required placeholder="₡ 0.00" min="0" step="100">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="serviceExperience">Años de experiencia</label>
+                            <input type="number" class="form-control" id="serviceExperience" required min="0" placeholder="0">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="serviceAvailability">Disponibilidad</label>
+                            <select class="form-select" id="serviceAvailability" required>
+                                <option value="">Selecciona</option>
+                                <option value="lunes-viernes">Lunes a Viernes</option>
+                                <option value="fines-semana">Fines de Semana</option>
+                                <option value="disponible">Disponible todos los días</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="serviceArea">Área de cobertura</label>
+                            <input type="text" class="form-control" id="serviceArea" required placeholder="Ej. San José, Cartago">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="serviceContact">Teléfono de contacto</label>
+                            <input type="tel" class="form-control" id="serviceContact" required placeholder="8765-4321">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="serviceCertified" required> Confirmo que tengo las certificaciones/habilidades necesarias para este servicio
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-cartoon btn-primary-custom">✓ Registrar servicio</button>
+                <button type="reset" class="btn btn-cartoon btn-secondary-custom">🔄 Limpiar formulario</button>
+            </form>
+        </section>
+
+        <!-- ========== ESTADÍSTICAS ========== -->
+        <section class="card-section">
+            <h2 class="section-title">📊 Mis Estadísticas</h2>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-number" id="statTotal">0</div>
+                    <div class="stat-label">Servicios activos</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="statViews">0</div>
+                    <div class="stat-label">Vistas totales</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="statRating">0</div>
+                    <div class="stat-label">Calificación</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="statBookings">0</div>
+                    <div class="stat-label">Reservas este mes</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== MIS SERVICIOS ========== -->
+        <section class="card-section">
+            <h2 class="section-title">🎯 Mis Servicios Ofrecidos</h2>
+            <div id="servicesContainer">
+                <div class="empty-state">
+                    <div class="empty-icon">📦</div>
+                    <div class="empty-text">Aún no has registrado ningún servicio. ¡Comienza ahora!</div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // ALMACENAMIENTO DE SERVICIOS (localStorage para persistencia)
+        let servicios = JSON.parse(localStorage.getItem('servicios')) || [];
+
+        // CARGAR SERVICIOS AL INICIAR
+        function cargarServicios() {
+            const container = document.getElementById('servicesContainer');
+            container.innerHTML = '';
+
+            if (servicios.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">📦</div>
+                        <div class="empty-text">Aún no has registrado ningún servicio. ¡Comienza ahora!</div>
+                    </div>
+                `;
+                actualizarStats();
+                return;
+            }
+
+            servicios.forEach((servicio, index) => {
+                const card = crearTarjetaServicio(servicio, index);
+                container.innerHTML += card;
+            });
+
+            actualizarStats();
+        }
+
+        // CREAR TARJETA DE SERVICIO
+        function crearTarjetaServicio(servicio, index) {
+            const iconos = {
+                tecnologia: '💻',
+                reparacion: '🔧',
+                limpieza: '🧹',
+                jardineria: '🌿',
+                cocina: '👨‍🍳',
+                salud: '⚕️',
+                educacion: '📚',
+                transporte: '🚗',
+                otro: '📋'
+            };
+
+            const estadoBadge = servicio.activo
+                ? `<span class="service-badge badge-active">✓ Activo</span>`
+                : `<span class="service-badge badge-inactive">✗ Inactivo</span>`;
+
+            return `
+                <div class="service-card" data-service-id="${index}">
+                    <div class="service-header">
+                        <div class="service-title">${iconos[servicio.categoria]} ${servicio.nombre}</div>
+                        ${estadoBadge}
+                    </div>
+
+                    <div class="service-details">
+                        <div class="detail-row">
+                            <span class="detail-label">📝 Description:</span>
+                            <span>${servicio.descripcion}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">💰 Tarifa:</span>
+                            <span>₡${servicio.tarifa.toLocaleString()}/hora</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">⭐ Experiencia:</span>
+                            <span>${servicio.experiencia} años</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">📅 Disponibilidad:</span>
+                            <span>${servicio.disponibilidad}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">📍 Cobertura:</span>
+                            <span>${servicio.area}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">📱 Contacto:</span>
+                            <span>${servicio.contacto}</span>
+                        </div>
+                    </div>
+
+                    <div class="service-actions">
+                        <button class="btn btn-cartoon btn-secondary-custom btn-icon" onclick="toggleServicio(${index})">
+                            ${servicio.activo ? '🔴 Desactivar' : '🟢 Activar'}
+                        </button>
+                        <button class="btn btn-cartoon btn-secondary-custom btn-icon" onclick="editarServicio(${index})">
+                            ✏️ Editar
+                        </button>
+                        <button class="btn btn-cartoon btn-danger-custom btn-icon" onclick="eliminarServicio(${index})">
+                            🗑️ Eliminar
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // AGREGAR NUEVO SERVICIO
+        function agregarServicio(event) {
+            event.preventDefault();
+
+            const nuevoServicio = {
+                nombre: document.getElementById('serviceName').value,
+                categoria: document.getElementById('serviceCategory').value,
+                descripcion: document.getElementById('serviceDescription').value,
+                tarifa: parseFloat(document.getElementById('servicePrice').value),
+                experiencia: parseInt(document.getElementById('serviceExperience').value),
+                disponibilidad: document.getElementById('serviceAvailability').value,
+                area: document.getElementById('serviceArea').value,
+                contacto: document.getElementById('serviceContact').value,
+                activo: true,
+                fechaCreacion: new Date().toLocaleDateString('es-CR')
+            };
+
+            servicios.push(nuevoServicio);
+            localStorage.setItem('servicios', JSON.stringify(servicios));
+
+            mostrarAlerta('¡Servicio registrado correctamente!', 'success');
+            document.getElementById('serviceForm').reset();
+            cargarServicios();
+        }
+
+        // ELIMINAR SERVICIO
+        function eliminarServicio(index) {
+            if (confirm('¿Estás seguro de que quieres eliminar este servicio?')) {
+                servicios.splice(index, 1);
+                localStorage.setItem('servicios', JSON.stringify(servicios));
+                mostrarAlerta('Servicio eliminado', 'info');
+                cargarServicios();
+            }
+        }
+
+        // ACTIVAR/DESACTIVAR SERVICIO
+        function toggleServicio(index) {
+            servicios[index].activo = !servicios[index].activo;
+            localStorage.setItem('servicios', JSON.stringify(servicios));
+            const estado = servicios[index].activo ? 'activado' : 'desactivado';
+            mostrarAlerta(`Servicio ${estado}`, 'info');
+            cargarServicios();
+        }
+
+        // EDITAR SERVICIO (placeholder)
+        function editarServicio(index) {
+            alert('Función de edición en desarrollo. Por ahora, elimina y registra nuevamente.');
+        }
+
+        // ACTUALIZAR ESTADÍSTICAS
+        function actualizarStats() {
+            document.getElementById('statTotal').textContent = servicios.filter(s => s.activo).length;
+            document.getElementById('statViews').textContent = Math.floor(Math.random() * 500) + 1;
+            document.getElementById('statRating').textContent = (Math.random() * 5).toFixed(1);
+            document.getElementById('statBookings').textContent = Math.floor(Math.random() * 20) + 1;
+        }
+
+        // MOSTRAR ALERTA
+        function mostrarAlerta(mensaje, tipo) {
+            const alertBox = document.getElementById('alertBox');
+            const alertClass = tipo === 'success' ? 'alert-success' : tipo === 'info' ? 'alert-info' : 'alert-warning';
+            alertBox.innerHTML = `<div class="alert ${alertClass}" role="alert">${mensaje}</div>`;
+            alertBox.style.display = 'block';
+
+            setTimeout(() => {
+                alertBox.style.display = 'none';
+            }, 3000);
+        }
+
+        // INICIALIZAR
+        window.addEventListener('load', cargarServicios);
+    </script>
+
+</body>
+
+</html>
