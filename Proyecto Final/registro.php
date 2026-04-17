@@ -12,8 +12,16 @@ if (empty($nombre) || empty($email) || empty($password)) {
 
 $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
-$sql = "INSERT INTO usuarios (nombre, email, telefono, tipo_usuario, password, estado, fecha_registro)
-        VALUES ('$nombre', '$email', '$telefono', 'usuario', '$passwordHash', 'activo', NOW())";
+$direccion = "Sin dirección";
+$fecha_nacimiento = "2000-01-01";
+$tipo_usuario = "usuario";
+$estado = "activo";
+$fecha_registro = date("Y-m-d");
+
+$sql = "INSERT INTO usuarios 
+(nombre, email, telefono, tipo_usuario, password, direccion, fecha_nacimiento, estado, fecha_registro)
+VALUES 
+('$nombre', '$email', '$telefono', '$tipo_usuario', '$passwordHash', '$direccion', '$fecha_nacimiento', '$estado', '$fecha_registro')";
 
 if ($con->query($sql) === TRUE) {
     echo "Usuario creado correctamente.<br><a href='Login.html'>Ir al login</a>";
