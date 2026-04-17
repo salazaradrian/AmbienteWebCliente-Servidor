@@ -13,7 +13,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.3/dist/brite/bootstrap.min.css" rel="stylesheet">
 
     <style>
-        /* ---------- BOTÓN CARTOON ---------- */
         .btn-cartoon{
           background: #35d7e5;
           border: 1px solid #000;
@@ -35,7 +34,6 @@
           box-shadow: 0 0 0 #000;
         }
 
-        /* ---------- TÍTULOS Y LABELS ---------- */
         h3 {
           font-weight: 700;
           letter-spacing: 0.5px;
@@ -45,7 +43,6 @@
           font-weight: 600;
         }
 
-        /* ---------- INPUTS ---------- */
         #login-box .form-control {
           border: 2px solid #000;
           box-shadow: 4px 4px 0 #000;
@@ -57,19 +54,6 @@
           outline: none;
           transform: translate(2px, 2px);
           box-shadow: 2px 2px 0 #000;
-        }
-
-        /* ---------- MENSAJE ÉXITO ---------- */
-        .msg-success{
-          display: inline-block;
-          background: #4caf50;
-          color: #000;
-          font-weight: 700;
-          padding: 8px 14px;
-          border: 2px solid #000;
-          border-radius: 6px;
-          box-shadow: 4px 4px 0 #000;
-          margin-top: 10px;
         }
     </style>
 </head>
@@ -84,22 +68,27 @@
             <div id="login-column" class="col-md-6">
                 <div id="login-box" class="col-md-12">
 
-                    <form id="login-form" class="form" onsubmit="crearUsuario(event)">
+                    <form id="login-form" class="form" method="POST" action="registro.php" onsubmit="return validarFormulario()">
                         <h3 class="text-center text-info">Register</h3>
 
                         <div class="form-group">
                             <label class="text-info">Username:</label>
-                            <input type="text" id="usuario" class="form-control" required>
+                            <input type="text" id="usuario" name="nombre" class="form-control" required>
                         </div>
 
                         <div class="form-group">
                             <label class="text-info">Email:</label>
-                            <input type="email" id="email" class="form-control" required>
+                            <input type="email" id="email" name="email" class="form-control" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="text-info">Teléfono:</label>
+                            <input type="text" id="telefono" name="telefono" class="form-control">
                         </div>
 
                         <div class="form-group">
                             <label class="text-info">Password:</label>
-                            <input type="password" id="password" class="form-control" required>
+                            <input type="password" id="password" name="password" class="form-control" required>
                         </div>
 
                         <div class="form-group">
@@ -107,7 +96,6 @@
                             <input type="password" id="confirmPassword" class="form-control" required>
                         </div>
 
-                        <!-- VER CONTRASEÑA -->
                         <div class="form-group">
                             <label class="text-info">
                                 <input type="checkbox" onclick="togglePassword()"> Mostrar contraseña
@@ -123,16 +111,9 @@
                         <button type="submit" class="btn-cartoon">Create user</button>
                         <button type="button" class="btn-cartoon" onclick="location.href='pagina inicio.html'" style="background: #ff6b9d; margin-left: 10px;">Volver</button>
 
-                        <!-- MENSAJE -->
-                        <div id="success-message" style="display:none;">
-                            <span class="msg-success">Usuario creado correctamente. Redirigiendo...</span>
-                        </div>
-
-                        <!-- MENSAJE ERROR -->
                         <div id="error-message" style="display:none; color: red; margin-top: 10px; font-weight: bold;">
                             <span></span>
                         </div>
-
                     </form>
 
                 </div>
@@ -141,11 +122,8 @@
     </div>
 </div>
 
-<!-- ================== SCRIPT ================== -->
 <script>
-function crearUsuario(event){
-    event.preventDefault();
-
+function validarFormulario() {
     const usuario = document.getElementById("usuario").value.trim();
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value;
@@ -153,50 +131,40 @@ function crearUsuario(event){
     const terms = document.getElementById("terms").checked;
 
     const errorMsg = document.getElementById("error-message");
-    const successMsg = document.getElementById("success-message");
 
-    // Limpiar mensajes
     errorMsg.style.display = "none";
-    successMsg.style.display = "none";
 
-    // Validaciones
     if (!usuario || !email || !password || !confirmPassword) {
         errorMsg.innerHTML = "<span>Por favor completa todos los campos</span>";
         errorMsg.style.display = "block";
-        return;
+        return false;
     }
 
     if (usuario.length < 3) {
         errorMsg.innerHTML = "<span>El usuario debe tener al menos 3 caracteres</span>";
         errorMsg.style.display = "block";
-        return;
+        return false;
     }
 
     if (password.length < 4) {
         errorMsg.innerHTML = "<span>La contraseña debe tener al menos 4 caracteres</span>";
         errorMsg.style.display = "block";
-        return;
+        return false;
     }
 
     if (password !== confirmPassword) {
         errorMsg.innerHTML = "<span>Las contraseñas no coinciden</span>";
         errorMsg.style.display = "block";
-        return;
+        return false;
     }
 
     if (!terms) {
         errorMsg.innerHTML = "<span>Debes aceptar los términos y condiciones</span>";
         errorMsg.style.display = "block";
-        return;
+        return false;
     }
 
-    // Si todo es correcto
-    successMsg.style.display = "block";
-    console.log("Registro exitoso:", { usuario, email });
-
-    setTimeout(() => {
-        window.location.href = "pagina inicio.html";
-    }, 1500);
+    return true;
 }
 
 function togglePassword(){
