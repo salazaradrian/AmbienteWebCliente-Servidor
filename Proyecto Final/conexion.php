@@ -1,8 +1,8 @@
 <?php
 $servername = "localhost:3307";
 $username = "root";
-$password = "root"; // si ese es el que tienes
-$dbname = "db ambiente web";
+$password = "root";
+$dbname = "db ambienteweb";
 
 $con = new mysqli($servername, $username, $password, $dbname);
 
