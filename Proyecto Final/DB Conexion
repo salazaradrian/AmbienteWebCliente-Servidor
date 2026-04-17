@@ -1,15 +1,12 @@
 <?php
 $servername = "localhost:3307";
 $username = "root";
-$password = "root";
-$dbname = "db ambienteweb";
+$password = "root"; // si ese es el que tienes
+$dbname = "db ambiente web";
 
-$con = new mysqli($servername,$username,$password,$dbname);
+$con = new mysqli($servername, $username, $password, $dbname);
 
-
-if($con ->connect_error){
-    die("conexion fallida. " . $con->connect_error);
-
+if ($con->connect_error) {
+    die("Conexión fallida: " . $con->connect_error);
 }
-echo "conexion exitsosa";
 ?>
