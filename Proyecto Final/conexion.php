@@ -1,7 +1,7 @@
 <?php
 $servername = "localhost:3307";
 $username = "root";
-$password = "1";
+$password = "root";
 $dbname = "db ambienteweb";
 
 $con = new mysqli($servername, $username, $password, $dbname);
