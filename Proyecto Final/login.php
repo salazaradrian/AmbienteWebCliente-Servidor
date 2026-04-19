@@ -9,14 +9,17 @@ if (empty($usuario) || empty($password)) {
     die("Debes completar todos los campos.");
 }
 
-$sql = "SELECT * FROM usuarios WHERE email='$usuario' OR nombre='$usuario'";
-$result = $con->query($sql);
+$sql = "SELECT * FROM usuarios WHERE LOWER(email) = LOWER(?) OR LOWER(nombre) = LOWER(?)";
+$stmt = $conexion->prepare($sql);
+$stmt->bind_param('ss', $usuario, $usuario);
+$stmt->execute();
+$result = $stmt->get_result();
 
-if ($result->num_rows > 0) {
+if ($result && $result->num_rows > 0) {
     $user = $result->fetch_assoc();
 
-    if ($password === $user['password']) {
-        $_SESSION['id_usuario'] = $user['id'];
+    if (password_verify($password, $user['password'])) {
+        $_SESSION['usuario_id'] = $user['id'];
         $_SESSION['nombre'] = $user['nombre'];
         $_SESSION['tipo_usuario'] = $user['tipo_usuario'];
 
@@ -24,10 +27,10 @@ if ($result->num_rows > 0) {
             header("Location: dashboard_admin.html");
             exit;
         } elseif ($user['tipo_usuario'] === 'voluntario') {
-            header("Location: dashboard_voluntario.html");
+            header("Location: dashboard_voluntario.php");
             exit;
         } else {
-            header("Location: dashboard_abuelo.html");
+            header("Location: dashboard_abuelo.php");
             exit;
         }
     } else {

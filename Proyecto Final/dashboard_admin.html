@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administrador - Círculo de Apoyo</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.3/dist/brite/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --rojo-admin: #dc3545;
+            --fondo: #f4f7fb;
+            --texto: #1f2937;
+            --borde: #000;
+            --naranja: #fd8d3e;
+            --verde: #10a95b;
+            --azul: #0d6efd;
+            --morado: #6f42c1;
+        }
+
+        body {
+            background: linear-gradient(135deg, #fff5e6 0%, #ffe6f0 50%, #e6f2ff 100%);
+            font-family: Arial, Helvetica, sans-serif;
+            color: var(--texto);
+            min-height: 100vh;
+        }
+
+        /* ========== NAVBAR ========== */
+        .navbar-admin {
+            background: var(--rojo-admin);
+            border-bottom: 4px solid var(--borde);
+            box-shadow: 0 8px 0 var(--borde);
+            padding: 1.2rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .navbar-admin-title {
+            color: #fff;
+            font-size: 2rem;
+            font-weight: 900;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .navbar-admin-user {
+            color: #fff;
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+
+        /* ========== BOTONES CARTOON ========== */
+        .btn-cartoon {
+            border: 2px solid var(--borde);
+            box-shadow: 5px 5px 0 var(--borde);
+            font-weight: 700;
+            border-radius: 12px;
+            transition: transform .08s ease, box-shadow .08s ease;
+        }
+
+        .btn-cartoon:hover {
+            filter: brightness(0.95);
+        }
+
+        .btn-cartoon:active {
+            transform: translate(5px, 5px);
+            box-shadow: 0 0 0 var(--borde);
+        }
+
+        /* ========== HEADER CON ESTADÍSTICAS ========== */
+        .header-admin {
+            background: #fff;
+            border: 3px solid var(--borde);
+            border-radius: 16px;
+            box-shadow: 8px 8px 0 var(--borde);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .header-title {
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: var(--rojo-admin);
+            margin-bottom: 1.5rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+            border: 3px solid var(--borde);
+            border-radius: 12px;
+            box-shadow: 6px 6px 0 var(--borde);
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 900;
+            margin: 0.5rem 0;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #5a6373;
+        }
+
+        /* ========== SECCIÓN DE ACCIONES ========== */
+        .actions-section {
+            background: #fff;
+            border: 3px solid var(--borde);
+            border-radius: 16px;
+            box-shadow: 8px 8px 0 var(--borde);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--rojo-admin);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .action-card {
+            background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+            border: 3px solid var(--borde);
+            border-radius: 12px;
+            box-shadow: 6px 6px 0 var(--borde);
+            padding: 1.5rem;
+            text-align: center;
+            transition: transform .15s ease, box-shadow .15s ease;
+            cursor: pointer;
+        }
+
+        .action-card:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 10px 10px 0 var(--borde);
+        }
+
+        .action-card:active {
+            transform: translate(3px, 3px);
+            box-shadow: 3px 3px 0 var(--borde);
+        }
+
+        .action-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .action-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--texto);
+            margin: 0;
+        }
+
+        /* ========== TABLA DE USUARIOS ========== */
+        .table-section {
+            background: #fff;
+            border: 3px solid var(--borde);
+            border-radius: 16px;
+            box-shadow: 8px 8px 0 var(--borde);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            overflow-x: auto;
+        }
+
+        .table-responsive {
+            border: none;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #f0f0f0;
+        }
+
+        th {
+            border: 2px solid var(--borde);
+            padding: 1rem;
+            font-weight: 800;
+            text-align: center;
+        }
+
+        td {
+            border: 2px solid var(--borde);
+            padding: 1rem;
+            text-align: center;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            border: 2px solid var(--borde);
+        }
+
+        .status-activo {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-inactivo {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .status-pendiente {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        /* ========== BOTONES DE ACCIÓN EN TABLA ========== */
+        .btn-action {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.8rem;
+            border: 2px solid var(--borde);
+            box-shadow: 3px 3px 0 var(--borde);
+            margin: 0 0.25rem;
+        }
+
+        .btn-action:active {
+            transform: translate(2px, 2px);
+            box-shadow: 1px 1px 0 var(--borde);
+        }
+
+        /* ========== FOOTER ========== */
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            margin-bottom: 1.5rem;
+            color: #4b5563;
+            font-weight: 600;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 768px) {
+            .navbar-admin-title {
+                font-size: 1.5rem;
+            }
+
+            .header-title {
+                font-size: 1.8rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .actions-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-card {
+                padding: 1rem;
+            }
+
+            table {
+                font-size: 0.85rem;
+            }
+
+            th, td {
+                padding: 0.7rem;
+            }
+        }
+
+        /* ========== MODAL STYLES ========== */
+        .modal-header {
+            background: var(--rojo-admin);
+            color: white;
+            border: 3px solid var(--borde);
+            border-bottom: none;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .modal-content {
+            border: 3px solid var(--borde);
+            border-radius: 12px;
+            box-shadow: 8px 8px 0 var(--borde);
+        }
+
+        .modal-title {
+            font-weight: 800;
+            font-size: 1.4rem;
+        }
+
+        .btn-close {
+            filter: brightness(0) invert(1);
+        }
+
+        .alert {
+            border: 3px solid var(--borde);
+            box-shadow: 5px 5px 0 var(--borde);
+            border-radius: 12px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ========== NAVBAR ========== -->
+    <nav class="navbar-admin">
+        <div class="container d-flex justify-content-between align-items-center">
+            <h1 class="navbar-admin-title">
+                <i class="fas fa-shield-alt"></i>
+                Panel de Administrador
+            </h1>
+            <div class="d-flex align-items-center gap-3">
+                <p class="navbar-admin-user mb-0">
+                    <i class="fas fa-user-circle"></i>
+                    Administrador
+                </p>
+                <button class="btn btn-light btn-cartoon" onclick="cerrarSesion()">Cerrar sesión</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ========== MAIN CONTENT ========== -->
+    <main class="container">
+
+        <!-- HEADER CON ESTADÍSTICAS -->
+        <section class="header-admin">
+            <h2 class="header-title">📊 Resumen del Sistema</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-number" id="totalUsers">24</div>
+                    <div class="stat-label">Usuarios Totales</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🤝</div>
+                    <div class="stat-number" id="totalVoluntarios">8</div>
+                    <div class="stat-label">Voluntarios Activos</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">👴</div>
+                    <div class="stat-number" id="totalAbuelos">12</div>
+                    <div class="stat-label">Abuelos Registrados</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📋</div>
+                    <div class="stat-number" id="solicitudesPendientes">5</div>
+                    <div class="stat-label">Solicitudes Pendientes</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN DE ACCIONES RÁPIDAS -->
+        <section class="actions-section">
+            <h2 class="section-title">
+                <i class="fas fa-bolt"></i>
+                Acciones Rápidas
+            </h2>
+            <div class="actions-grid">
+                <div class="action-card" onclick="abrirModal('gestionUsuarios')">
+                    <div class="action-icon">👥</div>
+                    <h3 class="action-title">Gestionar Usuarios</h3>
+                </div>
+                <div class="action-card" onclick="abrirModal('gestionVoluntarios')">
+                    <div class="action-icon">🤝</div>
+                    <h3 class="action-title">Gestionar Voluntarios</h3>
+                </div>
+                <div class="action-card" onclick="abrirModal('revisarSolicitudes')">
+                    <div class="action-icon">📋</div>
+                    <h3 class="action-title">Revisar Solicitudes</h3>
+                </div>
+                <div class="action-card" onclick="abrirModal('reportes')">
+                    <div class="action-icon">📊</div>
+                    <h3 class="action-title">Ver Reportes</h3>
+                </div>
+                <div class="action-card" onclick="abrirModal('configuracion')">
+                    <div class="action-icon">⚙️</div>
+                    <h3 class="action-title">Configuración</h3>
+                </div>
+                <div class="action-card" onclick="abrirModal('soporte')">
+                    <div class="action-icon">🆘</div>
+                    <h3 class="action-title">Soporte y Logs</h3>
+                </div>
+            </div>
+        </section>
+
+        <!-- TABLA DE USUARIOS RECIENTES -->
+        <section class="table-section">
+            <h2 class="section-title">
+                <i class="fas fa-list"></i>
+                Últimos Usuarios Registrados
+            </h2>
+            <div class="table-responsive">
+                <table class="table mb-0">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Email</th>
+                            <th>Tipo Usuario</th>
+                            <th>Estado</th>
+                            <th>Fecha Registro</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Juan Pérez</td>
+                            <td>juan@email.com</td>
+                            <td>usuario</td>
+                            <td><span class="status-badge status-activo">Activo</span></td>
+                            <td>2026-01-15</td>
+                            <td>
+                                <button class="btn btn-sm btn-primary btn-action" onclick="editarUsuario(1)">Editar</button>
+                                <button class="btn btn-sm btn-danger btn-action" onclick="desactivarUsuario(1)">Desactivar</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Carlos Rodríguez</td>
+                            <td>carlos@email.com</td>
+                            <td>voluntario</td>
+                            <td><span class="status-badge status-activo">Activo</span></td>
+                            <td>2026-01-10</td>
+                            <td>
+                                <button class="btn btn-sm btn-primary btn-action" onclick="editarUsuario(2)">Editar</button>
+                                <button class="btn btn-sm btn-danger btn-action" onclick="desactivarUsuario(2)">Desactivar</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>María García</td>
+                            <td>maria@email.com</td>
+                            <td>usuario</td>
+                            <td><span class="status-badge status-inactivo">Inactivo</span></td>
+                            <td>2025-12-20</td>
+                            <td>
+                                <button class="btn btn-sm btn-primary btn-action" onclick="editarUsuario(3)">Editar</button>
+                                <button class="btn btn-sm btn-success btn-action" onclick="activarUsuario(3)">Activar</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Luis Martínez</td>
+                            <td>luis@email.com</td>
+                            <td>voluntario</td>
+                            <td><span class="status-badge status-pendiente">Pendiente</span></td>
+                            <td>2026-02-01</td>
+                            <td>
+                                <button class="btn btn-sm btn-warning btn-action" onclick="revisarUsuario(4)">Revisar</button>
+                                <button class="btn btn-sm btn-danger btn-action" onclick="rechazarUsuario(4)">Rechazar</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- TABLA DE SOLICITUDES PENDIENTES -->
+        <section class="table-section">
+            <h2 class="section-title">
+                <i class="fas fa-hourglass-half"></i>
+                Solicitudes Pendientes por Atender
+            </h2>
+            <div class="table-responsive">
+                <table class="table mb-0">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Solicitante</th>
+                            <th>Tipo de Ayuda</th>
+                            <th>Voluntario Asignado</th>
+                            <th>Estado</th>
+                            <th>Fecha</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>101</td>
+                            <td>Don Juan</td>
+                            <td>Mandados</td>
+                            <td>Pendiente</td>
+                            <td><span class="status-badge status-pendiente">En Espera</span></td>
+                            <td>2026-04-19 10:30</td>
+                            <td>
+                                <button class="btn btn-sm btn-success btn-action" onclick="asignarVoluntario(101)">Asignar</button>
+                                <button class="btn btn-sm btn-danger btn-action" onclick="cancelarSolicitud(101)">Cancelar</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>102</td>
+                            <td>Doña Rosa</td>
+                            <td>Farmacia</td>
+                            <td>Ana López</td>
+                            <td><span class="status-badge status-activo">En Progreso</span></td>
+                            <td>2026-04-19 11:00</td>
+                            <td>
+                                <button class="btn btn-sm btn-info btn-action" onclick="verDetalles(102)">Detalles</button>
+                                <button class="btn btn-sm btn-success btn-action" onclick="completarSolicitud(102)">Completar</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        Círculo de Apoyo Costa Rica - 2026 | Panel de Administración
+    </footer>
+
+    <!-- ========== SCRIPT ========== -->
+    <script>
+        // Funciones de Navegación
+        function cerrarSesion() {
+            if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
+                location.href = 'pagina inicio.html';
+            }
+        }
+
+        function abrirModal(tipo) {
+            alert('Módulo: ' + tipo + '\n\nEsta funcionalidad se implementará próximamente.');
+        }
+
+        // Funciones de Usuarios
+        function editarUsuario(id) {
+            alert('Editando usuario ID: ' + id);
+        }
+
+        function desactivarUsuario(id) {
+            if (confirm('¿Desactivar usuario ID ' + id + '?')) {
+                alert('Usuario desactivado correctamente.');
+                location.reload();
+            }
+        }
+
+        function activarUsuario(id) {
+            if (confirm('¿Activar usuario ID ' + id + '?')) {
+                alert('Usuario activado correctamente.');
+                location.reload();
+            }
+        }
+
+        function revisarUsuario(id) {
+            alert('Revisando usuario ID: ' + id);
+        }
+
+        function rechazarUsuario(id) {
+            if (confirm('¿Rechazar usuario ID ' + id + '?')) {
+                alert('Usuario rechazado.');
+                location.reload();
+            }
+        }
+
+        // Funciones de Solicitudes
+        function asignarVoluntario(id) {
+            alert('Abriendo panel para asignar voluntario a solicitud ID: ' + id);
+        }
+
+        function cancelarSolicitud(id) {
+            if (confirm('¿Cancelar solicitud ID ' + id + '?')) {
+                alert('Solicitud cancelada.');
+                location.reload();
+            }
+        }
+
+        function verDetalles(id) {
+            alert('Ver detalles de solicitud ID: ' + id);
+        }
+
+        function completarSolicitud(id) {
+            if (confirm('¿Marcar solicitud ID ' + id + ' como completada?')) {
+                alert('Solicitud completada.');
+                location.reload();
+            }
+        }
+
+        // Actualizar estadísticas (simulado)
+        window.onload = function() {
+            console.log('Dashboard de Administrador cargado.');
+        };
+    </script>
+
+</body>
+
+</html>

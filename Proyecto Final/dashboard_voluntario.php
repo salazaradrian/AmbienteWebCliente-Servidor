@@ -1,3 +1,11 @@
+<?php
+session_start();
+
+if (!isset($_SESSION['usuario_id']) || $_SESSION['tipo_usuario'] !== 'voluntario') {
+    header('Location: Login.html');
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 

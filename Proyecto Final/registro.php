@@ -6,8 +6,7 @@ $email = trim($_POST['email']);
 $telefono = trim($_POST['telefono']);
 $password = $_POST['password'];
 
-if (empty($nombre)  empty($email) 
- empty($password)) {
+if (empty($nombre) || empty($email) || empty($password)) {
     die("Faltan datos obligatorios.");
 }
 

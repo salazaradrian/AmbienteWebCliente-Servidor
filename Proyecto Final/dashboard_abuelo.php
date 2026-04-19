@@ -1,10 +1,20 @@
+<?php
+session_start();
+
+if (!isset($_SESSION['usuario_id']) || $_SESSION['tipo_usuario'] !== 'usuario') {
+    header('Location: Login.html');
+    exit;
+}
+
+$nombreUsuario = htmlspecialchars($_SESSION['nombre'], ENT_QUOTES, 'UTF-8');
+?>
 <!DOCTYPE html>
 <html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel del Abuelo - Círculo de Apoyo</title>
+    <title>Panel del Abuelo - Circulo de Apoyo</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.3/dist/brite/bootstrap.min.css" rel="stylesheet">
@@ -198,8 +208,8 @@
 
     <nav class="navbar-abuelo">
         <div class="container d-flex justify-content-between align-items-center">
-            <h1 class="navbar-title">Hola, Don Juan</h1>
-            <button class="btn btn-light btn-cartoon" onclick="location.href='pagina inicio.html'">Cerrar sesión</button>
+            <h1 class="navbar-title">Hola, <?php echo $nombreUsuario; ?></h1>
+            <button class="btn btn-light btn-cartoon" onclick="location.href='pagina inicio.html'">Cerrar sesion</button>
         </div>
     </nav>
 
@@ -209,7 +219,7 @@
             <p class="welcome-subtitle">Presione para enviar su solicitud en segundos.</p>
         </section>
 
-        <section class="row g-4 text-center" aria-label="Acciones rápidas de ayuda">
+        <section class="row g-4 text-center" aria-label="Acciones rapidas de ayuda">
             <div class="col-6">
                 <button class="help-btn btn-compras" onclick="enviarSolicitud('Mandados')" aria-label="Solicitar mandados">
                     <span class="emoji">🛒</span>
@@ -223,7 +233,7 @@
                 </button>
             </div>
             <div class="col-6">
-                <button class="help-btn btn-compania" onclick="enviarSolicitud('Platicar')" aria-label="Solicitar compañía para platicar">
+                <button class="help-btn btn-compania" onclick="enviarSolicitud('Platicar')" aria-label="Solicitar compania para platicar">
                     <span class="emoji">💬</span>
                     <span>Platicar</span>
                 </button>
@@ -237,10 +247,10 @@
         </section>
 
         <section class="estado-card" aria-live="polite">
-            <h3 class="estado-title">Estado de su última solicitud:</h3>
+            <h3 class="estado-title">Estado de su ultima solicitud:</h3>
             <div class="d-flex align-items-center gap-3 mt-3">
                 <div class="spinner-grow text-success" role="status" aria-hidden="true"></div>
-                <p id="estadoTexto" class="estado-text mb-0">El voluntario Carlos está en camino</p>
+                <p id="estadoTexto" class="estado-text mb-0">El voluntario Carlos esta en camino</p>
             </div>
 
             <div class="quick-actions">
@@ -251,14 +261,13 @@
     </main>
 
     <footer>
-        Círculo de Apoyo Costa Rica - 2026
+        Circulo de Apoyo Costa Rica - 2026
     </footer>
 
     <script>
         function enviarSolicitud(tipo) {
-            // Convertir tipo a los valores de la BD
             var tipoBD = '';
-            switch(tipo) {
+            switch (tipo) {
                 case 'Mandados':
                     tipoBD = 'mandados';
                     break;
@@ -275,69 +284,61 @@
                     tipoBD = 'compania';
             }
 
-            // Mostrar mensaje de envío
             var estado = document.getElementById('estadoTexto');
             estado.textContent = 'Enviando solicitud de ' + tipo + '...';
 
-            // Crear formulario oculto para enviar POST
             var form = document.createElement('form');
             form.method = 'POST';
             form.action = 'crear_solicitud.php';
             form.style.display = 'none';
 
-            // Agregar campo tipo_servicio
             var inputTipo = document.createElement('input');
             inputTipo.type = 'hidden';
             inputTipo.name = 'tipo_servicio';
             inputTipo.value = tipoBD;
             form.appendChild(inputTipo);
 
-            // Agregar descripción básica
             var inputDesc = document.createElement('input');
             inputDesc.type = 'hidden';
             inputDesc.name = 'descripcion';
-            inputDesc.value = 'Solicitud automática desde dashboard: ' + tipo;
+            inputDesc.value = 'Solicitud automatica desde dashboard: ' + tipo;
             form.appendChild(inputDesc);
 
-            // Agregar urgencia (normal por defecto)
             var inputUrgencia = document.createElement('input');
             inputUrgencia.type = 'hidden';
             inputUrgencia.name = 'urgencia';
             inputUrgencia.value = 'normal';
             form.appendChild(inputUrgencia);
 
-            // Agregar hora actual
             var now = new Date();
             var horaActual = now.getHours().toString().padStart(2, '0') + ':' +
-                           now.getMinutes().toString().padStart(2, '0');
+                now.getMinutes().toString().padStart(2, '0');
             var inputHora = document.createElement('input');
             inputHora.type = 'hidden';
             inputHora.name = 'hora_solicitud';
             inputHora.value = horaActual;
             form.appendChild(inputHora);
 
-            // Agregar al body y enviar
             document.body.appendChild(form);
             form.submit();
         }
 
         function actualizarEstado() {
             var mensajes = [
-                'Voluntario asignado. Llegará en 20 minutos.',
-                'Su solicitud está siendo validada por el equipo.',
-                'Un voluntario cercano aceptó su solicitud.'
+                'Voluntario asignado. Llegara en 20 minutos.',
+                'Su solicitud esta siendo validada por el equipo.',
+                'Un voluntario cercano acepto su solicitud.'
             ];
 
             var indice = Math.floor(Math.random() * mensajes.length);
             document.getElementById('estadoTexto').textContent = mensajes[indice];
         }
 
-        // Verificar parámetros de URL para mostrar mensajes
         window.onload = function() {
             const urlParams = new URLSearchParams(window.location.search);
 
             if (urlParams.get('success') === '1') {
-                const mensaje = 'Solicitud registrada con éxito. Hemos recibido tu petición de ayuda. Un equipo se comunicará contigo pronto.';
+                const mensaje = 'Solicitud registrada con exito. Hemos recibido tu peticion de ayuda. Un equipo se comunicara contigo pronto.';
                 alert('✅ ' + mensaje);
                 document.getElementById('estadoTexto').textContent = mensaje;
             }
