@@ -55,5 +55,4 @@ if (mysqli_stmt_execute($stmt_update)) {
     header('Content-Type: application/json');
     echo json_encode(['success' => false, 'message' => 'Error al asignar la solicitud']);
 }
-?></content>
-<parameter name="filePath">c:\Users\Adrian Salazar R\OneDrive\Documentos\Universidad\I Cuatrimestre 2026\Ambiente Web Cliente Servidor\Repository\AmbienteWebCliente-Servidor\Proyecto Final\aceptar_solicitud.php
+?>

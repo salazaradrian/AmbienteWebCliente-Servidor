@@ -5,6 +5,8 @@ if (!isset($_SESSION['usuario_id']) || $_SESSION['tipo_usuario'] !== 'voluntario
     header('Location: Login.html');
     exit;
 }
+
+$nombreVoluntario = htmlspecialchars($_SESSION['nombre'], ENT_QUOTES, 'UTF-8');
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -329,9 +331,9 @@ if (!isset($_SESSION['usuario_id']) || $_SESSION['tipo_usuario'] !== 'voluntario
         <div class="container d-flex justify-content-between align-items-center">
             <div>
                 <h1 class="navbar-vol-title">Panel del Voluntario</h1>
-                <p class="navbar-vol-info">Bienvenido, Carlos López</p>
+                <p class="navbar-vol-info">Bienvenido, <?php echo $nombreVoluntario; ?></p>
             </div>
-            <button class="btn btn-light btn-cartoon" onclick="location.href='pagina inicio.html'">Cerrar sesión</button>
+            <button class="btn btn-light btn-cartoon" onclick="location.href='logout.php'">Cerrar sesión</button>
         </div>
     </nav>
 

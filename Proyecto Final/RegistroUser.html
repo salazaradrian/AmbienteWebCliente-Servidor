@@ -295,6 +295,14 @@
 
                 <form id="register-form" method="POST" action="registro.php" onsubmit="return validarFormulario()">
                     <div class="form-group">
+                        <label class="form-label" for="tipo_usuario">Tipo de cuenta:</label>
+                        <select id="tipo_usuario" name="tipo_usuario" class="form-control" required>
+                            <option value="usuario">Adulto mayor (Abuelo)</option>
+                            <option value="voluntario">Voluntario</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
                         <label class="form-label" for="usuario">Nombre Completo:</label>
                         <input type="text" id="usuario" name="nombre" class="form-control" required placeholder="Ingresa tu nombre completo">
                     </div>

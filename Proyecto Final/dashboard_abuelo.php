@@ -209,7 +209,7 @@ $nombreUsuario = htmlspecialchars($_SESSION['nombre'], ENT_QUOTES, 'UTF-8');
     <nav class="navbar-abuelo">
         <div class="container d-flex justify-content-between align-items-center">
             <h1 class="navbar-title">Hola, <?php echo $nombreUsuario; ?></h1>
-            <button class="btn btn-light btn-cartoon" onclick="location.href='pagina inicio.html'">Cerrar sesion</button>
+            <button class="btn btn-light btn-cartoon" onclick="location.href='logout.php'">Cerrar sesión</button>
         </div>
     </nav>
 
